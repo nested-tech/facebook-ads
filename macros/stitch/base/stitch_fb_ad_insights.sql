@@ -26,7 +26,8 @@ select
     canvas_avg_view_time,
     inline_link_clicks,
     inline_post_engagement,
-    unique_inline_link_clicks
+    unique_inline_link_clicks,
+    actions,
 
 from {{ var('ads_insights_table') }}
 

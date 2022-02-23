@@ -22,7 +22,6 @@ vars:
   adsets_table:                          #table
   campaigns_table:                       #table
   ads_insights_table:                    #table
-  ad_creatives__child_links_table:       #table -- disable if on snowflake
 
   url_tag_table:                         #only for fivetran
 ```

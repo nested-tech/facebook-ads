@@ -1,6 +1,6 @@
 {% macro stitch_base_table(tablename, partition_fields=['id']) %}
 
-    {{ adapter_macro('facebook_ads.stitch_base_table', tablename, partition_fields) }}
+    {{ return(adapter.dispatch('stitch_base_table', 'facebook_ads')(tablename, partition_fields)) }}
 
 {% endmacro %}
 

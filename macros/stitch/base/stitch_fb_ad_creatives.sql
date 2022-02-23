@@ -9,7 +9,7 @@
 
 with base as (
 
-    select * from {{ var('ad_creatives_table') }}
+    select * from {{ stitch_base_table(var('ad_creatives_table')) }}
 
 ),
 

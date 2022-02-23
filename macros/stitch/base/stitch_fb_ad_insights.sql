@@ -29,7 +29,7 @@ select
     unique_inline_link_clicks,
     actions,
 
-from {{ var('ads_insights_table') }}
+from {{ stitch_base_table(var('ads_insights_table'), ['campaign_id', 'adset_id', 'ad_id', 'date_start']) }}
 
 
 {% endmacro %}

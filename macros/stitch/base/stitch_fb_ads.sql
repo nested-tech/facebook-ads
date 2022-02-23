@@ -21,6 +21,6 @@ select distinct
     created_time as created_at,
     updated_time as updated_at
 
-from {{ var('ads_table') }}
+from {{ stitch_base_table(var('ads_table')) }}
 
 {% endmacro %}

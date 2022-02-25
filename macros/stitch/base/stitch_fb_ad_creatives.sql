@@ -9,13 +9,7 @@
 
 with base as (
 
-    select * from {{ var('ad_creatives_table') }}
-
-),
-
-child_links as (
-
-    select * from {{ ref('fb_ad_creatives__child_links') }}
+    select * from {{ stitch_base_table(var('ad_creatives_table')) }}
 
 ),
 
@@ -26,19 +20,14 @@ links_joined as (
         id as creative_id,
 
         lower(coalesce(
-          nullif(child_link, ''),
           nullif({{ facebook_ads.nested_field('base.object_story_spec', ['link_data', 'call_to_action', 'value', 'link']) }}, ''),
           nullif({{ facebook_ads.nested_field('base.object_story_spec', ['video_data', 'call_to_action', 'value', 'link']) }}, ''),
           nullif({{ facebook_ads.nested_field('base.object_story_spec', ['link_data', 'link']) }}, '')
         )) as url,
+        lower(nullif(url_tags, '')) as url_tags,
 
-        lower(coalesce(
-            nullif(url_tags, {{ dbt_utils.split_part('url', "'?'", 2) }}), '')
-        ) as url_tags
 
     from base
-    left join child_links
-        on base.id = child_links.creative_id
 
 ),
 
@@ -46,7 +35,10 @@ parsed as (
 
     select
 
-        links_joined.*,
+        links_joined.* except (url_tags),
+        lower(coalesce(
+            nullif(url_tags, {{ dbt_utils.split_part('url', "'?'", 2) }}), '')
+        ) as url_tags,
         {{ dbt_utils.split_part('url', "'?'", 1) }} as base_url,
         {{ dbt_utils.get_url_host('url') }} as url_host,
         {{ dbt_utils.concat(["'/'", dbt_utils.get_url_path('url')]) }} as url_path,

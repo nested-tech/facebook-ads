@@ -18,9 +18,3 @@
 
 {% endmacro %}
 
-
-{% macro snowflake__nested_field(field, subfields) %}
-
-    {{field ~ "['" ~ subfields|join("']['") ~ "']" }}
-
-{% endmacro %}
